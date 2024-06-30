@@ -2,27 +2,31 @@ html * {
     font-family: "Roboto", sans-serif;
     font-weight: 400;
     font-style: normal;
+    color: #171D1A;
 }
 /* Colors */
 /* Color Theme Swatches in Hex */
-/* .orange--teal-1-hex { color: #025259; } */
-/* .orange--teal-2-hex { color: #007172; } */
-/* .orange--teal-3-hex { color: #F29325; } */
-/* .orange--teal-4-hex { color: #D94F04; } */
-/* .orange--teal-5-hex { color: #F4E2DE; } */
+/* .Neutrals-Palette-1-hex { color: #361E20; } */
+/* .Neutrals-Palette-2-hex { color: #F5F0E9; } */
+/* .Neutrals-Palette-3-hex { color: #FAF9F6; } */
+/* .Neutrals-Palette-4-hex { color: #C7C3B9; } */
+/* .Neutrals-Palette-5-hex { color: #171D1A; } */
 
-.dayheader, h1 {
-    color: #D94F04;
+h1, h2 {
+    color: #361E20;
+    font-weight: 600;
+    font-style: normal;
 }
 .ascent, .descent, .distance, .time {
     border-style: solid;
     border-width: 2px;
-    border-color: #D94F04;
-    background-color: #F4E2DE;
+    border-color: #C7C3B9;
+    background-color: #FAF9F6;
     border-radius: 6px 1px;
     padding: 0.15ex 0.75ex;
     font-weight: 500;
     font-style: italic;
+    line-height: 1.5em;
 }
 
 .dayheader {
@@ -123,20 +127,57 @@ html * {
     margin-right: 0.5ex;
 }
 
+/* Texts */
+.textblock {
+    display: -webkit-box; /* wkhtmltopdf workaround */
+    display: flex;
+    position: relative;
+    background: #F5F0E9;
+    margin: 0.5em 0;
+    padding: 0.5em;
+}
+
 /* Images */
 .imageblock {
+    display: -webkit-box; /* wkhtmltopdf workaround */
     display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    position: relative;
-    background: #eee;
-    margin-top: 1%;
-    margin-left: 0;
-    margin-right: 0;
-    margin-bottom: 1%;
+    background: #F5F0E9;
+    margin: 0.5em 0;
+    gap: 0.5em;
+    padding: 0.5em;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    -webkit-box-pack: justify; /* wkhtmltopdf workaround */
+    justify-content: space-between;
 }
-.fullsize img {
-    padding: 5% 5%;
-    flex: 100%;
+.imageblock > div {
+    -webkit-box-flex: 1; /* wkhtmltopdf workaround */
+    -webkit-flex: 1; /* wkhtmltopdf workaround */
+    flex: 1 1 0;
+    border: solid medium red;
+}
+.imageblock > * + * {
+    -webkit-margin-start: 0.5em /* wkhtmltopdf workaround */
+}
+.imagetext {
+    padding-left: 1em;
+    font-size: 0.75em;
+    position: relative;
+    display: block;
+}
+.fullsize .image {
+    
+}
+.twoimages .image {
+
+}
+.image img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding: 0;
     max-width: 100%;
+    max-height: 100vh;
 }
