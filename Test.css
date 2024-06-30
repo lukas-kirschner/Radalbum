@@ -1,0 +1,142 @@
+html * {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+/* Colors */
+/* Color Theme Swatches in Hex */
+/* .orange--teal-1-hex { color: #025259; } */
+/* .orange--teal-2-hex { color: #007172; } */
+/* .orange--teal-3-hex { color: #F29325; } */
+/* .orange--teal-4-hex { color: #D94F04; } */
+/* .orange--teal-5-hex { color: #F4E2DE; } */
+
+.dayheader, h1 {
+    color: #D94F04;
+}
+.ascent, .descent, .distance, .time {
+    border-style: solid;
+    border-width: 2px;
+    border-color: #D94F04;
+    background-color: #F4E2DE;
+    border-radius: 6px 1px;
+    padding: 0.15ex 0.75ex;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.dayheader {
+    position: relative;
+    padding: 0;
+    padding-bottom: 2em;
+    margin: 0;
+    border: blue;
+}
+.dayheader h2 {
+    display: block;
+    vertical-align: top;
+    margin-bottom: 0.05em;
+}
+.dayheader .destfrom {
+    position: relative;
+    margin-left: 2em;
+    font-weight: 500;
+    font-style: italic;
+    float: left;
+}
+.destfrom:after {
+    content: "→";
+    display: inline;
+    float: right;
+    font-style: normal;
+    margin-left: 1ex;
+    margin-right: 1ex;
+}
+.dayheader .destto {
+    position: relative;
+    display: inline;
+    font-weight: 500;
+    font-style: italic;
+}
+.dayheader .ascent {
+    position: absolute;
+    right: 12ex;
+    bottom: 0;
+    display: block;
+    width: 9ex;
+}
+.dayheader .descent {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: block;
+    width: 9ex;
+}
+.dayheader .time {
+    position: absolute;
+    right: 24ex;
+    bottom: 0;
+    display: block;
+    width: 9ex;
+}
+.dayheader .distance {
+    position: absolute;
+    right: 36ex;
+    bottom: 0;
+    display: block;
+    width: 9ex;
+}
+
+/* Symbols and units */
+.destfrom:before {
+    content: "↪";
+    font-style: normal;
+    margin-right: 0.5ex;
+}
+.ascent:before {
+    content: "↗";
+    font-style: normal;
+    margin-right: 0.5ex;
+}
+.ascent:after {
+    content: "m";
+}
+.descent:before {
+    content: "↘";
+    font-style: normal;
+    margin-right: 0.5ex;
+}
+.descent:after {
+    content: "m";
+}
+.distance:before {
+    content: "⇄";
+    font-style: normal;
+    margin-right: 0.5ex;
+}
+.distance:after {
+    content: "km";
+}
+.time:before {
+    content: "⏲";
+    font-style: normal;
+    margin-right: 0.5ex;
+}
+
+/* Images */
+.imageblock {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    position: relative;
+    background: #eee;
+    margin-top: 1%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 1%;
+}
+.fullsize img {
+    padding: 5% 5%;
+    flex: 100%;
+    max-width: 100%;
+}
