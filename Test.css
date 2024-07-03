@@ -133,31 +133,36 @@ h1, h2 {
     display: flex;
     position: relative;
     background: #F5F0E9;
-    margin: 0.5em 0;
-    padding: 0.5em;
+    margin: 1em 0;
+    padding: 1em;
 }
 
 /* Images */
 .imageblock {
+    background: #F5F0E9;
+    margin: 1em 0;
+    padding: 1em;
+}
+.imageblock, .imagerow {
     display: -webkit-box; /* wkhtmltopdf workaround */
     display: flex;
-    background: #F5F0E9;
-    margin: 0.5em 0;
-    gap: 0.5em;
-    padding: 0.5em;
     flex-wrap: nowrap;
     flex-direction: row;
+    gap: 1em;
     -webkit-box-pack: justify; /* wkhtmltopdf workaround */
     justify-content: space-between;
+}
+.imageblock + .multirow {
+    flex-direction: column;
 }
 .imageblock > div {
     -webkit-box-flex: 1; /* wkhtmltopdf workaround */
     -webkit-flex: 1; /* wkhtmltopdf workaround */
     flex: 1 1 0;
-    border: solid medium red;
+    /*border: solid medium red;*/
 }
 .imageblock > * + * {
-    -webkit-margin-start: 0.5em /* wkhtmltopdf workaround */
+    -webkit-margin-start: 1em /* wkhtmltopdf workaround */
 }
 .imagetext {
     padding-left: 1em;
@@ -171,6 +176,12 @@ h1, h2 {
 .twoimages .image {
 
 }
+.threeimagestop .image {
+
+}
+.threeimagesbottom .image {
+
+}
 .image img {
     display: block;
     margin-left: auto;
@@ -180,4 +191,9 @@ h1, h2 {
     padding: 0;
     max-width: 100%;
     max-height: 100vh;
+}
+.image p {
+    margin: 0;
+    padding: 0;
+    display: inline;
 }
