@@ -4,6 +4,9 @@ html * {
     font-style: normal;
     color: #171D1A;
 }
+i, em {
+    font-style: italic;
+}
 /* Colors */
 /* Color Theme Swatches in Hex */
 /* .Neutrals-Palette-1-hex { color: #361E20; } */
@@ -129,8 +132,7 @@ h1, h2 {
 
 /* Texts */
 .textblock {
-    display: -webkit-box; /* wkhtmltopdf workaround */
-    display: flex;
+    display: block;
     position: relative;
     background: #F5F0E9;
     margin: 1em 0;
@@ -154,6 +156,10 @@ h1, h2 {
 }
 .imageblock + .multirow {
     flex-direction: column;
+}
+.imagerow {
+    display: block;
+    flex: 1 1 0;
 }
 .imageblock > div {
     -webkit-box-flex: 1; /* wkhtmltopdf workaround */
