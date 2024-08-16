@@ -26,8 +26,7 @@ fn main() {
     let input_directory = cli.input_directory;
     println!("Value for input directory: {input_directory:?}");
 
-    let mut album = Album {};
-    album.import_all_photos(&input_directory);
+    let mut album = Album::import_all_photos(&input_directory).unwrap();
 
     if let Some(config_path) = cli.out {
         println!("Value for output directory: {}", config_path.display());
