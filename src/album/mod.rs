@@ -1,12 +1,11 @@
 mod photo;
 
-use std::{env, fs, io};
-use std::fmt::Formatter;
-use std::fs::File;
-use std::io::{BufWriter, ErrorKind, Write};
-use std::path::PathBuf;
 use crate::album::photo::Photo;
 use itertools::Itertools;
+use std::fs::File;
+use std::io::{BufWriter, ErrorKind, Write};
+use std::path::{Path, PathBuf};
+use std::{env, fs, io};
 
 pub struct Album {
     photos: Vec<Photo>,
@@ -20,7 +19,9 @@ impl Album {
                 .filter_map(|p| p.ok())
                 .map(|p| p.path())
                 .filter_map(|p| {
-                    if p.extension().map_or(false, |ext| ext == "jpg" || ext == "png") {
+                    if p.extension()
+                        .map_or(false, |ext| ext == "jpg" || ext == "png")
+                    {
                         Some(p)
                     } else {
                         None
@@ -31,13 +32,19 @@ impl Album {
                     println!("Loading Photo {:?}", &p);
                     p
                 })
-                .map(|p| Photo::load_from_disk(p))
+                .map(Photo::load_from_disk)
                 .filter_map(|f| f.ok())
-                .collect::<Vec<_>>()
+                .collect::<Vec<_>>(),
         })
     }
-    fn write_aux_files(&self, path: &PathBuf) -> io::Result<()> {
-        let mut assets_path = env::current_exe()?.parent().ok_or(io::Error::new(ErrorKind::Unsupported, "Exe Path did not have a parent!"))?.join(Self::ASSETS_DIR);
+    fn write_aux_files(&self, path: &Path) -> io::Result<()> {
+        let mut assets_path = env::current_exe()?
+            .parent()
+            .ok_or(io::Error::new(
+                ErrorKind::Unsupported,
+                "Exe Path did not have a parent!",
+            ))?
+            .join(Self::ASSETS_DIR);
         if !assets_path.is_dir() {
             assets_path = PathBuf::from(Self::ASSETS_DIR);
         }
@@ -52,39 +59,58 @@ impl Album {
         for photo in &self.photos {
             writeln!(f, "<div class=\"imageblock fullsize\">")?;
             writeln!(f, "<div class=\"image\">")?;
-            writeln!(f, "")?;
-            writeln!(f, "![Missing Image: {0}]({0})", photo.get_relative_path().into_os_string().into_string().map_err(|e| io::Error::new(ErrorKind::InvalidData, "Invalid Path in image detected!"))?)?;
-            writeln!(f, "")?;
-            writeln!(f, "<div class=\"imagetext\">{}</div>", photo.get_html_escaped_title())?;
+            writeln!(f)?;
+            writeln!(
+                f,
+                "![Missing Image: {0}]({0})",
+                photo
+                    .get_relative_path()
+                    .into_os_string()
+                    .into_string()
+                    .map_err(|_| io::Error::new(
+                        ErrorKind::InvalidData,
+                        "Invalid Path in image detected!"
+                    ))?
+            )?;
+            writeln!(f)?;
+            writeln!(
+                f,
+                "<div class=\"imagetext\">{}</div>",
+                photo.get_html_escaped_title()
+            )?;
             writeln!(f, "</div>")?;
             writeln!(f, "</div>")?;
-            writeln!(f, "")?;
+            writeln!(f)?;
             let caption = photo.get_html_escaped_caption();
             if !caption.is_empty() {
                 writeln!(f, "<div class=\"textblock fullsizetext\">")?;
-                writeln!(f, "")?;
+                writeln!(f)?;
                 writeln!(f, "{}", caption)?;
-                writeln!(f, "")?;
+                writeln!(f)?;
                 writeln!(f, "</div>")?;
-                writeln!(f, "")?;
+                writeln!(f)?;
             }
         }
         Ok(())
     }
-    pub fn write_to_disk(&mut self, path: &PathBuf) {
+    pub fn write_to_disk(&mut self, path: &Path) {
         if let Err(e) = self.write_aux_files(path) {
             eprintln!("{:?}", e);
         }
         // Copy all photos to the output directory.
         for photo in &mut self.photos {
             match photo.write_to_directory(path) {
-                Ok(p) => { *photo = p; }
-                Err(e) => { eprintln!("{:?}", e); }
+                Ok(p) => {
+                    *photo = p;
+                },
+                Err(e) => {
+                    eprintln!("{:?}", e);
+                },
             }
         }
         let out = File::create(path.join("Album.md")).unwrap();
         let mut out = BufWriter::new(out);
-        self.print_markdown(&mut out);
+        self.print_markdown(&mut out).unwrap();
         for photo in &self.photos {
             println!("{}", photo)
         }
