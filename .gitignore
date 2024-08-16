@@ -1,3 +1,5 @@
 *.pdf
 *.html
 /target
+/test/
+/TestAlbum/
