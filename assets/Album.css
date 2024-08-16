@@ -4,9 +4,38 @@ html * {
     font-style: normal;
     color: #171D1A;
 }
+
+h1 {
+    font-size: 3em;
+}
+
+h2 {
+    font-size: 2.5em;
+}
+
+h3 {
+    font-size: 2.0em;
+}
+
+h4 {
+    font-size: 1.8em;
+}
+
+p {
+    font-size: 1.5em;
+}
+
+body {
+    max-width: 100vh;
+    min-width: calc(100vw / 2);
+    margin-left: auto;
+    margin-right: auto;
+}
+
 i, em {
     font-style: italic;
 }
+
 /* Colors */
 /* Color Theme Swatches in Hex */
 /* .Neutrals-Palette-1-hex { color: #361E20; } */
@@ -20,6 +49,7 @@ h1, h2 {
     font-weight: 600;
     font-style: normal;
 }
+
 .ascent, .descent, .distance, .time {
     border-style: solid;
     border-width: 2px;
@@ -39,11 +69,13 @@ h1, h2 {
     margin: 0;
     border: blue;
 }
+
 .dayheader h2 {
     display: block;
     vertical-align: top;
     margin-bottom: 0.05em;
 }
+
 .dayheader .destfrom {
     position: relative;
     margin-left: 2em;
@@ -51,6 +83,7 @@ h1, h2 {
     font-style: italic;
     float: left;
 }
+
 .destfrom:after {
     content: "→";
     display: inline;
@@ -59,12 +92,14 @@ h1, h2 {
     margin-left: 1ex;
     margin-right: 1ex;
 }
+
 .dayheader .destto {
     position: relative;
     display: inline;
     font-weight: 500;
     font-style: italic;
 }
+
 .dayheader .ascent {
     position: absolute;
     right: 12ex;
@@ -72,6 +107,7 @@ h1, h2 {
     display: block;
     width: 9ex;
 }
+
 .dayheader .descent {
     position: absolute;
     right: 0;
@@ -79,6 +115,7 @@ h1, h2 {
     display: block;
     width: 9ex;
 }
+
 .dayheader .time {
     position: absolute;
     right: 24ex;
@@ -86,6 +123,7 @@ h1, h2 {
     display: block;
     width: 9ex;
 }
+
 .dayheader .distance {
     position: absolute;
     right: 36ex;
@@ -100,30 +138,37 @@ h1, h2 {
     font-style: normal;
     margin-right: 0.5ex;
 }
+
 .ascent:before {
     content: "↗";
     font-style: normal;
     margin-right: 0.5ex;
 }
+
 .ascent:after {
     content: "m";
 }
+
 .descent:before {
     content: "↘";
     font-style: normal;
     margin-right: 0.5ex;
 }
+
 .descent:after {
     content: "m";
 }
+
 .distance:before {
     content: "⇄";
     font-style: normal;
     margin-right: 0.5ex;
 }
+
 .distance:after {
     content: "km";
 }
+
 .time:before {
     content: "⏲";
     font-style: normal;
@@ -145,6 +190,7 @@ h1, h2 {
     margin: 1em 0;
     padding: 1em;
 }
+
 .imageblock, .imagerow {
     display: -webkit-box; /* wkhtmltopdf workaround */
     display: flex;
@@ -154,40 +200,51 @@ h1, h2 {
     -webkit-box-pack: justify; /* wkhtmltopdf workaround */
     justify-content: space-between;
 }
+
 .imageblock + .multirow {
     flex-direction: column;
 }
+
 .imagerow {
     display: block;
     flex: 1 1 0;
 }
+
 .imageblock > div {
     -webkit-box-flex: 1; /* wkhtmltopdf workaround */
     -webkit-flex: 1; /* wkhtmltopdf workaround */
     flex: 1 1 0;
     /*border: solid medium red;*/
 }
+
 .imageblock > * + * {
     -webkit-margin-start: 1em /* wkhtmltopdf workaround */
 }
+
 .imagetext {
     padding-left: 1em;
-    font-size: 0.75em;
+    font-size: 1.8em;
+    font-weight: 600;
     position: relative;
     display: block;
 }
+
 .fullsize .image {
-    
+
 }
+
 .twoimages .image {
 
 }
+
 .threeimagestop .image {
 
 }
+
 .threeimagesbottom .image {
 
 }
+
 .image img {
     display: block;
     margin-left: auto;
@@ -198,6 +255,7 @@ h1, h2 {
     max-width: 100%;
     max-height: 100vh;
 }
+
 .image p {
     margin: 0;
     padding: 0;
