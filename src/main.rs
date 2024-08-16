@@ -1,8 +1,9 @@
 mod album;
 
+use std::env::set_current_dir;
 use std::fs;
 use std::path::PathBuf;
-
+use std::process::Command;
 use clap::{Parser};
 use crate::album::Album;
 
@@ -36,5 +37,13 @@ fn main() {
             }
         }
         album.write_to_disk(&config_path);
+
+        // TODO add switch to disable build
+        // Build album as HTML and PDF
+        set_current_dir(&config_path).unwrap();
+        Command::new("make")
+            .spawn()
+            .expect("failed to start external executable")
+            .wait().unwrap();
     }
 }

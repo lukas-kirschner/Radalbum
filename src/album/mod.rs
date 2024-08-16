@@ -41,7 +41,7 @@ impl Album {
         if !assets_path.is_dir() {
             assets_path = PathBuf::from(Self::ASSETS_DIR);
         }
-        for asset in ["Makefile", "Test.css"] {
+        for asset in ["Makefile", "Album.css"] {
             fs::copy(assets_path.join(asset), path.join(asset))?;
         }
         Ok(())

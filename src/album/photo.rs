@@ -61,7 +61,22 @@ impl Photo {
         });
     }
     fn normalize_filename(&self, filename: &OsStr) -> OsString {
-        filename.to_os_string() //TODO
+        //TODO OSString may lose invalid bytes in the process!
+        OsString::from(filename.to_string_lossy().chars().map(|c| match c {
+            ' ' => '_',
+            'ä' => 'a',
+            'ö' => 'o',
+            'ü' => 'u',
+            'Ä' => 'A',
+            'Ö' => 'O',
+            'Ü' => 'U',
+            'ß' => 's',
+            'é' => 'e',
+            'É' => 'E',
+            '!' => '_',
+            'ł' => 'l',
+            x => x
+        }).collect::<String>())
     }
 
     /// Write this photo into an "img" subfolder of the given folder.
