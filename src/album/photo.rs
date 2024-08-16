@@ -30,6 +30,26 @@ pub struct Photo {
 }
 
 impl Photo {
+    pub(crate) fn get_html_escaped_caption(&self) -> String {
+        self.description.clone().trim().to_string()
+    }
+}
+
+impl Photo {
+    pub(crate) fn get_html_escaped_title(&self) -> String {
+        self.heading.clone().trim().to_string()
+    }
+}
+
+impl Photo {
+    pub(crate) fn get_relative_path(&self) -> PathBuf {
+        let foldername = self.source.parent().map(|p| p.file_name()).unwrap().unwrap();
+        let filename = self.source.file_name().unwrap();
+        PathBuf::from(foldername).join(filename)
+    }
+}
+
+impl Photo {
     pub fn load_from_disk(source: PathBuf) -> Result<Self, PhotoLoadingError> {
         let exif = rexiv2::Metadata::new_from_path(&source)?;
         let heading = exif.get_tag_string("Iptc.Application2.ObjectName").unwrap_or("".to_string());
@@ -52,11 +72,11 @@ impl Photo {
         let filename = self.source.file_name().ok_or(io::Error::new(ErrorKind::Unsupported, "Directories are not supported as photos!"))?;
         let out_path = target.join("img").join(self.normalize_filename(filename));
         fs::create_dir_all(out_path.parent().unwrap())?;
-        fs::copy(&self.source, out_path)?;
+        fs::copy(&self.source, &out_path)?;
         Ok(Photo {
             heading: self.heading.clone(),
             description: self.description.clone(),
-            source: self.source.clone(),
+            source: out_path,
         })
     }
 }

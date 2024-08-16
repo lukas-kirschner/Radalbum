@@ -1,7 +1,9 @@
 mod photo;
 
 use std::{env, fs, io};
-use std::io::ErrorKind;
+use std::fmt::Formatter;
+use std::fs::File;
+use std::io::{BufWriter, ErrorKind, Write};
 use std::path::PathBuf;
 use crate::album::photo::Photo;
 use itertools::Itertools;
@@ -44,6 +46,31 @@ impl Album {
         }
         Ok(())
     }
+
+    fn print_markdown<W: Write>(&self, f: &mut W) -> io::Result<()> {
+        write!(f, "# Test-Album\n\n")?;
+        for photo in &self.photos {
+            writeln!(f, "<div class=\"imageblock fullsize\">")?;
+            writeln!(f, "<div class=\"image\">")?;
+            writeln!(f, "")?;
+            writeln!(f, "![Missing Image: {0}]({0})", photo.get_relative_path().into_os_string().into_string().map_err(|e| io::Error::new(ErrorKind::InvalidData, "Invalid Path in image detected!"))?)?;
+            writeln!(f, "")?;
+            writeln!(f, "<div class=\"imagetext\">{}</div>", photo.get_html_escaped_title())?;
+            writeln!(f, "</div>")?;
+            writeln!(f, "</div>")?;
+            writeln!(f, "")?;
+            let caption = photo.get_html_escaped_caption();
+            if !caption.is_empty() {
+                writeln!(f, "<div class=\"textblock fullsizetext\">")?;
+                writeln!(f, "")?;
+                writeln!(f, "{}", caption)?;
+                writeln!(f, "")?;
+                writeln!(f, "</div>")?;
+                writeln!(f, "")?;
+            }
+        }
+        Ok(())
+    }
     pub fn write_to_disk(&mut self, path: &PathBuf) {
         if let Err(e) = self.write_aux_files(path) {
             eprintln!("{:?}", e);
@@ -55,6 +82,9 @@ impl Album {
                 Err(e) => { eprintln!("{:?}", e); }
             }
         }
+        let out = File::create(path.join("Album.md")).unwrap();
+        let mut out = BufWriter::new(out);
+        self.print_markdown(&mut out);
         for photo in &self.photos {
             println!("{}", photo)
         }
