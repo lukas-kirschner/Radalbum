@@ -1,6 +1,8 @@
+use std::ffi::{OsStr, OsString};
 use std::fmt::{Display, Formatter};
 use std::fs::File;
-use std::io;
+use std::{fs, io};
+use std::io::ErrorKind;
 use std::path::PathBuf;
 use rexiv2::Rexiv2Error;
 use crate::album::photo::PhotoLoadingError::{ExifParseError, IOError, MissingExifError};
@@ -37,6 +39,25 @@ impl Photo {
             description,
             source,
         });
+    }
+    fn normalize_filename(&self, filename: &OsStr) -> OsString {
+        filename.to_os_string() //TODO
+    }
+
+    /// Write this photo into an "img" subfolder of the given folder.
+    /// If there already exists a photo with the same name, this will change the output name of
+    /// the photo to a unique name.
+    /// Special characters in the source images will be truncated to underscores in the target image.
+    pub fn write_to_directory(&self, target: &PathBuf) -> io::Result<Self> {
+        let filename = self.source.file_name().ok_or(io::Error::new(ErrorKind::Unsupported, "Directories are not supported as photos!"))?;
+        let out_path = target.join("img").join(self.normalize_filename(filename));
+        fs::create_dir_all(out_path.parent().unwrap())?;
+        fs::copy(&self.source, out_path)?;
+        Ok(Photo {
+            heading: self.heading.clone(),
+            description: self.description.clone(),
+            source: self.source.clone(),
+        })
     }
 }
 
