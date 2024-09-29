@@ -1,4 +1,5 @@
 pub(crate) mod SinglePhoto;
+pub(crate) mod TwoPhotos;
 
 use crate::album::photo::PhotoLoadingError::{ExifParseError, IOError};
 use rexiv2::Rexiv2Error;

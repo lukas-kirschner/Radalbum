@@ -1,6 +1,7 @@
 pub mod photo;
 
 use crate::album::photo::SinglePhoto::SinglePhoto;
+use crate::album::photo::TwoPhotos::TwoPhotos;
 use crate::album::photo::{Photo, PhotoContainer};
 use itertools::Itertools;
 use std::fs::File;
@@ -59,6 +60,11 @@ impl Album {
                         .as_mut()
                         .unwrap()
                         .push(Box::new(SinglePhoto::new(photo))),
+                    1 => self
+                        .collected_photos
+                        .as_mut()
+                        .unwrap()
+                        .push(Box::new(TwoPhotos::new(stack.pop().unwrap(), photo))),
                     _ => (),
                 }
             }
