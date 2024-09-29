@@ -53,12 +53,13 @@ impl Album {
                 stack.push(photo);
             } else {
                 match stack.len() {
+                    // Single Full-Size Photo
                     0 => self
                         .collected_photos
                         .as_mut()
                         .unwrap()
                         .push(Box::new(SinglePhoto::new(photo))),
-                    _ => todo!(),
+                    _ => (),
                 }
             }
         }
@@ -80,10 +81,14 @@ impl Album {
         Ok(())
     }
 
-    fn print_markdown<W: Write>(&self, f: &mut W) -> io::Result<()> {
+    fn print_markdown(&self, f: &mut Box<dyn Write>) -> io::Result<()> {
         write!(f, "# Test-Album\n\n")?;
-        for photo in &self.photos {
-            //TODO
+        for container in self
+            .collected_photos
+            .as_ref()
+            .expect("Please call collect_photos before calling this function!")
+        {
+            container.print_markdown(f)?;
         }
         Ok(())
     }
@@ -103,9 +108,11 @@ impl Album {
                 },
             }
         }
+        self.collect_photos();
         let out = File::create(path.join("Album.md")).unwrap();
         let mut out = BufWriter::new(out);
-        self.print_markdown(&mut out).unwrap();
+        let mut outBoxed: Box<dyn Write> = Box::new(out);
+        self.print_markdown(&mut outBoxed).unwrap();
         for photo in &self.photos {
             println!("{}", photo)
         }
