@@ -5,8 +5,8 @@ authors = ["Lukas Kirschner <lukas@lukaskirschner.de>"]
 edition = "2021"
 
 [dependencies]
-markdown = "=1.0.0-alpha.18"
-clap = { version = "4.5.16", features = ["derive"] }
+markdown = "=1.0.0-alpha.21"
+clap = { version = "4.5.18", features = ["derive"] }
 itertools = "0.13.0"
 rexiv2 = "0.10.0"
 

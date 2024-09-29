@@ -1,8 +1,10 @@
+pub(crate) mod SinglePhoto;
+
 use crate::album::photo::PhotoLoadingError::{ExifParseError, IOError};
 use rexiv2::Rexiv2Error;
 use std::ffi::{OsStr, OsString};
 use std::fmt::{Display, Formatter};
-use std::io::ErrorKind;
+use std::io::{ErrorKind, Write};
 use std::path::{Path, PathBuf};
 use std::{fs, io};
 
@@ -129,4 +131,17 @@ impl Display for Photo {
             &self.source, &self.heading, &self.description
         )
     }
+}
+
+pub trait PhotoContainer {
+    /// Write everything out as Markdown file.
+    /// The generated markdown file contains the paths stored inside this object.
+    /// If photos need to be copied before generating the markdown file,
+    /// call write_to_directory before calling this function!
+    fn print_markdown(&self, f: &mut Box<dyn Write>) -> io::Result<()>;
+    /// Write all photos to the given directory.
+    /// Returns a copy of itself if successful, which contains the updated paths.
+    /// All print calls must be done on the copy in order to make sure the paths match.
+    fn write_to_directory(&self, target: &Path) -> io::Result<Box<dyn PhotoContainer>>;
+    fn photos(&self) -> Box<dyn Iterator<Item = &Photo> + '_>;
 }

@@ -1,20 +1,23 @@
-mod photo;
+pub mod photo;
 
-use crate::album::photo::Photo;
+use crate::album::photo::SinglePhoto::SinglePhoto;
+use crate::album::photo::{Photo, PhotoContainer};
 use itertools::Itertools;
 use std::fs::File;
 use std::io::{BufWriter, ErrorKind, Write};
 use std::path::{Path, PathBuf};
-use std::{env, fs, io};
+use std::{env, fs, io, mem};
 
 pub struct Album {
     photos: Vec<Photo>,
+    collected_photos: Option<Vec<Box<dyn PhotoContainer>>>,
 }
 
 impl Album {
     const ASSETS_DIR: &'static str = "assets";
     pub fn import_all_photos(path: &PathBuf) -> Result<Self, io::Error> {
         Ok(Album {
+            collected_photos: None,
             photos: fs::read_dir(path)?
                 .filter_map(|p| p.ok())
                 .map(|p| p.path())
@@ -37,6 +40,29 @@ impl Album {
                 .collect::<Vec<_>>(),
         })
     }
+    /// Collect all photos into their appropriate containers.
+    /// This will move all photos and empty the photos vector
+    pub fn collect_photos(&mut self) -> () {
+        if self.collected_photos.is_none() {
+            self.collected_photos = Some(vec![]);
+        }
+        let mut stack: Vec<Photo> = vec![];
+        let photos = mem::replace(&mut self.photos, vec![]);
+        for photo in photos.into_iter() {
+            if photo.get_html_escaped_title().trim() == "/" {
+                stack.push(photo);
+            } else {
+                match stack.len() {
+                    0 => self
+                        .collected_photos
+                        .as_mut()
+                        .unwrap()
+                        .push(Box::new(SinglePhoto::new(photo))),
+                    _ => todo!(),
+                }
+            }
+        }
+    }
     fn write_aux_files(&self, path: &Path) -> io::Result<()> {
         let mut assets_path = env::current_exe()?
             .parent()
@@ -57,42 +83,11 @@ impl Album {
     fn print_markdown<W: Write>(&self, f: &mut W) -> io::Result<()> {
         write!(f, "# Test-Album\n\n")?;
         for photo in &self.photos {
-            writeln!(f, "<div class=\"imageblock fullsize\">")?;
-            writeln!(f, "<div class=\"image\">")?;
-            writeln!(f)?;
-            writeln!(
-                f,
-                "![Missing Image: {0}]({0})",
-                photo
-                    .get_relative_path()
-                    .into_os_string()
-                    .into_string()
-                    .map_err(|_| io::Error::new(
-                        ErrorKind::InvalidData,
-                        "Invalid Path in image detected!"
-                    ))?
-            )?;
-            writeln!(f)?;
-            writeln!(
-                f,
-                "<div class=\"imagetext\">{}</div>",
-                photo.get_html_escaped_title()
-            )?;
-            writeln!(f, "</div>")?;
-            writeln!(f, "</div>")?;
-            writeln!(f)?;
-            let caption = photo.get_html_escaped_caption();
-            if !caption.is_empty() {
-                writeln!(f, "<div class=\"textblock fullsizetext\">")?;
-                writeln!(f)?;
-                writeln!(f, "{}", caption)?;
-                writeln!(f)?;
-                writeln!(f, "</div>")?;
-                writeln!(f)?;
-            }
+            //TODO
         }
         Ok(())
     }
+    /// Write the complete album to disk as Markdown file and copy all photos
     pub fn write_to_disk(&mut self, path: &Path) {
         if let Err(e) = self.write_aux_files(path) {
             eprintln!("{:?}", e);
