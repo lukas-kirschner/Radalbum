@@ -15,48 +15,28 @@ impl TwoPhotos {
 
 impl PhotoContainer for TwoPhotos {
     fn print_markdown(&self, f: &mut Box<dyn Write>) -> std::io::Result<()> {
-        writeln!(f, "<div class=\"imageblock twoimages\">")?;
+        writeln!(f, "<div class=\"imageblock multirow twoimages\">")?;
+        writeln!(f, "<div class=\"imagerow\">")?;
         // Image 1
         writeln!(f, "<div class=\"image\">")?;
         writeln!(f)?;
-        writeln!(
-            f,
-            "![Missing Image: {0}]({0})",
-            self.photo1
-                .get_relative_path()
-                .into_os_string()
-                .into_string()
-                .map_err(|_| io::Error::new(
-                    ErrorKind::InvalidData,
-                    "Invalid Path in image detected!"
-                ))?
-        )?;
+        self.photo1.print_markdown(f)?;
         writeln!(f)?;
-        writeln!(f, "</div>")?;
-        // Image 2
+        writeln!(f, "</div>")?; // image
+                                // Image 2
         writeln!(f, "<div class=\"image\">")?;
         writeln!(f)?;
-        writeln!(
-            f,
-            "![Missing Image: {0}]({0})",
-            self.photo2
-                .get_relative_path()
-                .into_os_string()
-                .into_string()
-                .map_err(|_| io::Error::new(
-                    ErrorKind::InvalidData,
-                    "Invalid Path in image detected!"
-                ))?
-        )?;
+        self.photo2.print_markdown(f)?;
         writeln!(f)?;
+        writeln!(f, "</div>")?; // image
+        writeln!(f, "</div>")?; // imagerow
+
         writeln!(
             f,
             "<div class=\"imagetext\">{}</div>",
             self.photo2.get_html_escaped_title()
         )?;
-        writeln!(f, "</div>")?;
-
-        writeln!(f, "</div>")?;
+        writeln!(f, "</div>")?; //imageblock
         writeln!(f)?;
         let caption = self.photo2.get_html_escaped_caption();
         if !caption.is_empty() {

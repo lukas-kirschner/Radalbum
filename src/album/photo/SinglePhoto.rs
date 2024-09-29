@@ -17,18 +17,7 @@ impl PhotoContainer for SinglePhoto {
         writeln!(f, "<div class=\"imageblock fullsize\">")?;
         writeln!(f, "<div class=\"image\">")?;
         writeln!(f)?;
-        writeln!(
-            f,
-            "![Missing Image: {0}]({0})",
-            self.photo
-                .get_relative_path()
-                .into_os_string()
-                .into_string()
-                .map_err(|_| io::Error::new(
-                    ErrorKind::InvalidData,
-                    "Invalid Path in image detected!"
-                ))?
-        )?;
+        self.photo.print_markdown(f)?;
         writeln!(f)?;
         writeln!(
             f,

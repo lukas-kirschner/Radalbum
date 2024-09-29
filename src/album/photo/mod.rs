@@ -122,6 +122,20 @@ impl Photo {
             source: out_path,
         })
     }
+    fn print_markdown(&self, f: &mut Box<dyn Write>) -> std::io::Result<()> {
+        writeln!(
+            f,
+            "![Missing Image: {0}]({0})",
+            self.get_relative_path()
+                .into_os_string()
+                .into_string()
+                .map_err(|_| io::Error::new(
+                    ErrorKind::InvalidData,
+                    "Invalid Path in image detected!"
+                ))?
+        )?;
+        Ok(())
+    }
 }
 
 impl Display for Photo {
