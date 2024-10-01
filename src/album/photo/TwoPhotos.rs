@@ -40,7 +40,7 @@ impl PhotoContainer for TwoPhotos {
         writeln!(f)?;
         let caption = self.photo2.get_html_escaped_caption();
         if !caption.is_empty() {
-            writeln!(f, "<div class=\"textblock fullsizetext\">")?;
+            writeln!(f, "<div class=\"textblock fullsizetext forimage\">")?;
             writeln!(f)?;
             writeln!(f, "{}", caption)?;
             writeln!(f)?;

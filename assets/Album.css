@@ -186,6 +186,8 @@ h1, h2 {
 
 /* Images */
 .imageblock {
+    display: block;
+    position: relative;
     background: #F5F0E9;
     margin: 1em 0;
     padding: 1em;
@@ -194,8 +196,9 @@ h1, h2 {
 .imageblock, .imagerow {
     display: -webkit-box; /* wkhtmltopdf workaround */
     display: flex;
+    position: relative;
     flex-wrap: nowrap;
-    flex-direction: row;
+    flex-grow: 1;
     gap: 1em;
     -webkit-box-pack: justify; /* wkhtmltopdf workaround */
     justify-content: space-between;
@@ -206,8 +209,7 @@ h1, h2 {
 }
 
 .imagerow {
-    display: block;
-    flex: 1 1 0;
+    height: 40vh;
 }
 
 .imageblock > div {
@@ -222,6 +224,7 @@ h1, h2 {
 }
 
 .imagetext {
+    margin-top: 0.33em;
     padding-left: 1em;
     font-size: 1.8em;
     font-weight: 600;
@@ -246,18 +249,19 @@ h1, h2 {
 }
 
 .image img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 0;
-    margin-top: 0;
-    padding: 0;
     max-width: 100%;
     max-height: 100vh;
+    object-fit: contain;
 }
 
 .image p {
-    margin: 0;
-    padding: 0;
-    display: inline;
+    border: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+}
+
+.forimage {
+    margin-top: -1.5em;
+    padding-top: 0;
 }
