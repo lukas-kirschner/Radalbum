@@ -1,6 +1,7 @@
 pub mod photo;
 
 use crate::album::photo::SinglePhoto::SinglePhoto;
+use crate::album::photo::TagMarker::TagMarker;
 use crate::album::photo::TwoPhotos::TwoPhotos;
 use crate::album::photo::{Photo, PhotoContainer};
 use itertools::Itertools;
@@ -41,6 +42,34 @@ impl Album {
                 .collect::<Vec<_>>(),
         })
     }
+    fn is_tag_marker(photo: &Photo) -> bool {
+        if photo
+            .get_html_escaped_caption()
+            .trim()
+            .split('\n')
+            .map(|line| line.split(':').next())
+            .filter(|l| l.is_some())
+            .map(|l| l.unwrap().trim())
+            .map(|s| s.to_lowercase())
+            .any(|l| vec!["gpx", "distance", "time"].iter().any(|w| l == *w))
+        {
+            return true;
+        }
+        if let Some(dayWord) = photo
+            .get_html_escaped_title()
+            .trim()
+            .split(' ')
+            .next()
+            .map(|s| s.to_lowercase())
+        {
+            if !vec!["tag", "day", "chapter"].iter().any(|w| dayWord == *w) {
+                return false;
+            }
+            return true; //TODO more things like GPX: or Distance: ?
+        }
+        false
+    }
+
     /// Collect all photos into their appropriate containers.
     /// This will move all photos and empty the photos vector
     pub fn collect_photos(&mut self) -> () {
@@ -54,12 +83,14 @@ impl Album {
                 stack.push(photo);
             } else {
                 match stack.len() {
-                    // Single Full-Size Photo
-                    0 => self
-                        .collected_photos
-                        .as_mut()
-                        .unwrap()
-                        .push(Box::new(SinglePhoto::new(photo))),
+                    // Single Full-Size Photo or tag marker
+                    0 => self.collected_photos.as_mut().unwrap().push(
+                        if Self::is_tag_marker(&photo) {
+                            Box::new(TagMarker::new(photo))
+                        } else {
+                            Box::new(SinglePhoto::new(photo))
+                        },
+                    ),
                     1 => self
                         .collected_photos
                         .as_mut()

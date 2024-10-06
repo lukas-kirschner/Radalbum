@@ -1,4 +1,5 @@
 pub(crate) mod SinglePhoto;
+pub(crate) mod TagMarker;
 pub(crate) mod TwoPhotos;
 
 use crate::album::photo::PhotoLoadingError::{ExifParseError, IOError};
@@ -32,7 +33,7 @@ impl Display for PhotoLoadingError {
         }
     }
 }
-
+#[derive(Clone)]
 pub struct Photo {
     heading: String,
     description: String,
