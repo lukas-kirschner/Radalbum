@@ -1,5 +1,6 @@
 pub(crate) mod SinglePhoto;
 pub(crate) mod TagMarker;
+pub(crate) mod ThreePhotos;
 pub(crate) mod TwoPhotos;
 
 use crate::album::photo::PhotoLoadingError::{ExifParseError, IOError};

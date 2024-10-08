@@ -2,6 +2,7 @@ pub mod photo;
 
 use crate::album::photo::SinglePhoto::SinglePhoto;
 use crate::album::photo::TagMarker::TagMarker;
+use crate::album::photo::ThreePhotos::ThreePhotos;
 use crate::album::photo::TwoPhotos::TwoPhotos;
 use crate::album::photo::{Photo, PhotoContainer};
 use itertools::Itertools;
@@ -96,6 +97,15 @@ impl Album {
                         .as_mut()
                         .unwrap()
                         .push(Box::new(TwoPhotos::new(stack.pop().unwrap(), photo))),
+                    2 => self
+                        .collected_photos
+                        .as_mut()
+                        .unwrap()
+                        .push(Box::new(ThreePhotos::new(
+                            stack.pop().unwrap(),
+                            stack.pop().unwrap(),
+                            photo,
+                        ))),
                     _ => (),
                 }
             }
