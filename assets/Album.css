@@ -216,18 +216,20 @@ h1, h2 {
     display: flex;
     position: relative;
     flex-wrap: nowrap;
-    flex-grow: 1;
     gap: 1em;
     -webkit-box-pack: justify; /* wkhtmltopdf workaround */
     justify-content: space-between;
 }
 
-.imageblock + .multirow {
+.imageblock, .multirow {
     flex-direction: column;
 }
 
 .imagerow {
-    height: 40vh;
+    max-height: 60vh;
+    flex-direction: row;
+    display: flex;
+    width: 100%;
 }
 
 .imageblock > div {
@@ -267,8 +269,9 @@ h1, h2 {
 }
 
 .image img {
+    display: block;
     max-width: 100%;
-    max-height: 100vh;
+    max-height: 100%;
     object-fit: contain;
 }
 
@@ -277,6 +280,8 @@ h1, h2 {
     margin: 0 !important;
     padding: 0 !important;
     display: block !important;
+    max-width: 100%;
+    max-height: 100%;
 }
 
 .forimage {
