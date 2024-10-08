@@ -1,5 +1,6 @@
 pub mod photo;
 
+use crate::album::photo::FourPhotosTwoByTwo::FourPhotosTwoByTwo;
 use crate::album::photo::SinglePhoto::SinglePhoto;
 use crate::album::photo::TagMarker::TagMarker;
 use crate::album::photo::ThreePhotos::ThreePhotos;
@@ -106,7 +107,15 @@ impl Album {
                             stack.pop().unwrap(),
                             photo,
                         ))),
-                    _ => (),
+                    3 => self.collected_photos.as_mut().unwrap().push(Box::new(
+                        FourPhotosTwoByTwo::new(
+                            stack.pop().unwrap(),
+                            stack.pop().unwrap(),
+                            stack.pop().unwrap(),
+                            photo,
+                        ),
+                    )),
+                    _ => eprintln!("Unsupported Image Count: {}", stack.len()),
                 }
             }
         }

@@ -1,3 +1,4 @@
+pub(crate) mod FourPhotosTwoByTwo;
 pub(crate) mod SinglePhoto;
 pub(crate) mod TagMarker;
 pub(crate) mod ThreePhotos;
